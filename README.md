@@ -1,4 +1,4 @@
-# Groupon SEM Keyword Tool (v2.0)
+# SEM Keyword Tool (v2.0)
 
 > **Product Management Case Study & Interactive Prototype**  
 > Bridging local merchandising insights and paid search (SEM) automation across international markets.
