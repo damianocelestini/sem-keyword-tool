@@ -3,7 +3,7 @@
 > **Product Management Case Study & Interactive Prototype**  
 > Bridging local merchandising insights and paid search (SEM) automation across international markets.
 >
-> **Note on Prototype Scope:** This repository is an interactive reconstruction of the internal SEM tool built at Groupon, extended with a v2.0 AI Editorial Copy Optimizer. To allow standalone evaluation without internal Groupon credentials or live ad spend, the **Groupon MDS Feed** and **Google Ads (AdWords) API** are simulated with deterministic services, while the **Editorial CMS AI Copy Check** runs live against the **Google Gemini API** (with a built-in contextual NLP fallback so the app also works offline or without an API key).
+> **About This Prototype:** This repository documents the product case study, system architecture, and interactive prototype I built to reconstruct the internal SEM tool I led at Groupon—extended with a **v2.0 AI Editorial Copy Optimizer** powered by Google Gemini. *(Live interactive walkthrough available during product demos).*
 
 ---
 
@@ -19,22 +19,31 @@ Local Revenue and Merchandising Managers know exactly how customers in their cit
 
 ## 2. The Features
 
-- **Deal Permalink Lookup & Economics (`Deal/Keywords`)**
-  - Start from an empty state or filter by country (`IE`, `IT`, `FR`, `DE`, `GB`, `ES`) and deal permalink to inspect MDS deal unit economics, including **Deal Price**, **Discount**, and **Net Margin (%)**.
-  - View keyword-level performance (**Impressions**, **Clicks**, **Cost**, **Revenue**, **CPC**, **CTR %**, **CR %**, and **EGR %**) dynamically across selectable time ranges (`Last 7 Days`, `14 Days`, `30 Days`, `90 Days`, `YTD`).
-- **Bulk Keyword Upload & Automated Guardrails**
-  - Upload keywords in bulk via text or CSV across `Exact`, `Phrase`, and `Broad` match types.
-  - **Automated Pre-Sync Validation** filters out:
-    1. **Campaign & Batch Duplicates**
-    2. **Trademark & Copyright Denylist Terms**
-    3. **Low Search Volume (`<50/mo`) via Google Ads Keyword Planner**
-  - Submissions are queued (`PENDING_SYNC`) for the overnight Google Ads batch sync, with an automated email recap sent to the user detailing accepted vs. rejected keywords.
-- **Manager Performance Report (`Performance Report`)**
-  - Executive KPI rollup tracking total SEM spend, gross revenue, and **Blended EGR %** (`Expense as % of Gross Revenue`).
-  - Interactive **Deal-by-Deal Efficiency Breakdown**: Clicking on any Revenue Manager reveals which of their deals are **Efficient (`<100% EGR`)** vs. **Inefficient (`>100% EGR`)** to guide 1:1 coaching and budget reallocation.
-- **AI Editorial CMS Copy Suggester (`Editorial CMS Suggester`)**
-  - Filters strictly profitable (`<100% EGR`) keywords by **City / Market** and **Category Taxonomy**.
-  - Uses **Google Gemini AI** (`POST /api/editorial-cms/analyze`) grounded on verified profitable keywords to suggest 1-click **"Add"** or **"Replace `[phrase]` with `[keyword phrase]`"** copy edits, automatically enforcing proper **Headline Title Case**.
+### A. Deal Permalink Lookup & Bulk Keyword Upload (`Deal/Keywords`)
+- **Deal Inspection**: Filter by country (`IE`, `IT`, `FR`, `DE`, `GB`, `ES`) and deal permalink to inspect MDS unit economics (**Deal Price**, **Discount**, and **Net Margin %**) alongside keyword-level performance (**Impressions**, **Clicks**, **Cost**, **Revenue**, **CPC**, **CTR %**, **CR %**, and **EGR %**) across selectable time ranges (`7d`, `14d`, `30d`, `90d`, `YTD`).
+- **Automated Pre-Sync Guardrails**: Revenue Managers upload keywords in bulk (CSV or text) across `Exact`, `Phrase`, and `Broad` match types. The system automatically filters out:
+  1. **Campaign & Batch Duplicates**
+  2. **Trademark & Copyright Denylist Terms**
+  3. **Low Search Volume (`<50/mo`) via Google Ads Keyword Planner**
+- **Queued Overnight Sync & Email Recap**: Submissions are queued (`PENDING_SYNC`) for the overnight Google Ads batch sync, with an automated morning email recap sent to the submitter.
+
+<!-- Drag and drop Screenshot 1 (Deal/Keywords Tab) on GitHub right below this line -->
+
+---
+
+### B. Manager Performance Report & Deal Drilldown (`Performance Report`)
+- **Executive KPI Rollup**: Tracks total SEM spend, gross revenue, and **Blended EGR %** (`Expense as % of Gross Revenue`) across direct reports.
+- **Deal-by-Deal Efficiency Breakdown**: Clicking on any Revenue Manager expands their portfolio to show which specific deals are **Efficient (`<100% EGR`)** vs. **Inefficient (`>100% EGR`)**, enabling targeted 1:1 coaching and budget reallocation.
+
+<!-- Drag and drop Screenshot 2 (Performance Report with Expanded Manager Deal Breakdown) on GitHub right below this line -->
+
+---
+
+### C. AI Editorial CMS Copy Suggester (`Editorial CMS Suggester`)
+- **Grounded in Profitable SEM Data**: Filters strictly profitable (`<100% EGR`) keywords by **City / Market** and **Category Taxonomy**.
+- **1-Click Copy Optimization**: Uses **Google Gemini AI** grounded on verified `<100% EGR` keywords to audit draft deal copy and suggest 1-click **"Add"** or **"Replace `[phrase]` with `[keyword phrase]`"** edits while enforcing proper **Headline Title Case**.
+
+<!-- Drag and drop Screenshot 3 (Editorial CMS Suggester with AI Replace/Add Edits) on GitHub right below this line -->
 
 ---
 
@@ -44,13 +53,13 @@ Local Revenue and Merchandising Managers know exactly how customers in their cit
 
 ### Production System vs. Portfolio Prototype
 
-| Logical Block | Production System (At Groupon) | This Portfolio Prototype |
+| Logical Block | Production System (Shipped at Groupon) | This Interactive Prototype |
 | :--- | :--- | :--- |
-| **1. Frontend (`React SPA`)** | Internal web portal for Revenue Managers & Global SEM leads | Interactive React 19 + TypeScript + Tailwind CSS workspace |
-| **2. Core Services & APIs** | Deduplication, trademark denylist, and batch queue pipeline | `keywordValidation.ts`, `timeRangeMetrics.ts`, and Express `server.ts` |
-| **3. Deal & Taxonomy Catalog** | Live **Groupon MDS (Merchant Data System)** feed | Seeded multi-country deal dataset (`IE`, `IT`, `FR`, `DE`, `GB`, `ES`) |
+| **1. Frontend (`React SPA`)** | Internal web portal for Revenue Managers & Global SEM leads | Interactive React + TypeScript workspace |
+| **2. Core Services & Guardrails** | Deduplication, trademark denylist, and batch queue pipeline | Automated validation engine & dynamic time-range metrics |
+| **3. Deal & Taxonomy Catalog** | Live **Groupon MDS (Merchant Data System)** feed | Multi-country deal dataset (`IE`, `IT`, `FR`, `DE`, `GB`, `ES`) |
 | **4. Paid Search & Volume API** | Live **Google AdWords / Ads API** (Keyword Planner + Nightly Sync) | Simulated deterministic volume lookup & overnight batch sync |
-| **5. Editorial Copy Optimizer** | *(v2.0 Product Extension)* | **Live Google Gemini API** (`gemini-3.1-flash-lite`) + local NLP fallback |
+| **5. Editorial Copy Optimizer** | *(v2.0 Product Extension)* | **Live Google Gemini AI** (`gemini-3.1-flash-lite`) + contextual NLP rewriter |
 
 ---
 
@@ -59,17 +68,3 @@ Local Revenue and Merchandising Managers know exactly how customers in their cit
 - **Up to 30% Revenue Contribution in Non-English Markets**: Unlocking localized, native-language keyword coverage (`IT`, `FR`, `DE`, `ES`) captured high-converting local search demand that automated English-centric templates missed.
 - **~15% Revenue Contribution Globally**: Scaled across international merchandising teams while maintaining strict **`<100% EGR`** profitability guardrails.
 - **Zero Campaign Pollution**: Automated deduplication, copyright denylist checks, and search volume thresholds eliminated manual SEM QA bottlenecks.
-
----
-
-## 5. Running Locally
-
-```bash
-# 1. Install dependencies
-npm install
-
-# 2. Start the full-stack development server (Express + Vite on http://localhost:3000)
-npm run dev
-```
-
-*(Optional)* To enable live Gemini AI generation in the **Editorial CMS Suggester**, create a `.env` file with `GEMINI_API_KEY="your_api_key"`. If omitted, the application automatically uses its built-in multi-language contextual NLP rewriter so all features work out of the box.
