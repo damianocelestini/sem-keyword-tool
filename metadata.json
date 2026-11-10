@@ -1,7 +1,0 @@
-{
-  "name": "Groupon SEM Keyword Tool",
-  "description": "Internal MarTech application for Revenue & Country Managers to manage, validate, and track deal keywords connected to the Groupon MDS deal feed.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
-
