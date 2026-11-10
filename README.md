@@ -49,7 +49,7 @@ Local Revenue and Merchandising Managers know exactly how customers in their cit
 
 ## 3. The Architecture
 
-![Groupon SEM Keyword Tool Architecture](./docs/architecture.svg)
+![Groupon SEM Keyword Tool Architecture](architecture.svg)
 
 ### Production System vs. Portfolio Prototype
 
